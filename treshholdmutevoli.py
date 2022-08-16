@@ -1,22 +1,7 @@
 from cmath import inf
-from random import random
 import time
 import snap
-soglia=5
-random.seed(42)
-
-
-def staticthreshold():
-    return soglia
-
-def maggioranzathreshold(degree):
-    return round(degree * (1/2))
-
-def proportionalthreshold(degree):
-    return round(degree * (1/10))
-
-def randomthreshold():
-    return random.randint(1,10)
+import random
 
 
 
@@ -38,6 +23,7 @@ TSet=[]
 flag_case1=False
 flag_case2=False
 eliminato=None
+random.seed(42)
 start_time = time.time()
 for i in G.Nodes():
     temporaneo={"vicini":"","degree":"","t":""}
@@ -46,9 +32,8 @@ for i in G.Nodes():
         lista.append(i.GetNbrNId(b))
     temporaneo["vicini"]=lista
     temporaneo["degree"]=i.GetDeg()
-    temporaneo["t"]=staticthreshold
+    temporaneo["t"]=random.randint(1,10)
     informazioni_nodi[i.GetId()]=temporaneo
-
 while len(informazioni_nodi.keys())!=0:
     for nodo in informazioni_nodi.keys():
         if (informazioni_nodi[nodo]["t"] == 0):
