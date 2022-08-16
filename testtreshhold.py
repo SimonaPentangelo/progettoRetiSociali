@@ -4,7 +4,11 @@ import time
 import snap
 soglia=5
 random.seed(42)
-
+prob=0.3
+def differita(G):
+    for i in G.Edges():
+        if random.random < prob:
+            G.DelEdge(i.GetSrcNId(),i.GetDstNId())
 
 def staticthreshold():
     return soglia
