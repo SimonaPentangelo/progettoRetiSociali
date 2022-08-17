@@ -1,13 +1,33 @@
 from cmath import inf
-from random import random
+import random
 import time
 import snap
 soglia=5
 random.seed(42)
-prob=0.3
+prob=0
+media_risultati = 0 
+media_tempo = 0
+output_file_result = "differita_proportional_threshold.txt"
+
+def update_globvar(input1, input2):
+    global media_risultati    
+    media_risultati += input1
+    global media_tempo
+    media_tempo += input2
+
+def reset_globvar():
+    global media_risultati    
+    media_risultati = 0
+    global media_tempo
+    media_tempo = 0
+
+def print_globvar():
+    print(media_risultati)
+    print(media_tempo)
+
 def differita(G):
     for i in G.Edges():
-        if random.random < prob:
+        if random.random() < prob:
             G.DelEdge(i.GetSrcNId(),i.GetDstNId())
 
 def staticthreshold():
@@ -17,12 +37,10 @@ def maggioranzathreshold(degree):
     return round(degree * (1/2))
 
 def proportionalthreshold(degree):
-    return round(degree * (1/10))
+    return round(degree * (1/5))
 
 def randomthreshold():
     return random.randint(1,10)
-
-
 
 def caso3(dizionario):
     chiave = list(dizionario.keys())[0]
@@ -34,78 +52,82 @@ def caso3(dizionario):
             massimo=temporaneo
     return chiave
 
-
-
-(G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-informazioni_nodi={}
-TSet=[]
-flag_case1=False
-flag_case2=False
-eliminato=None
-start_time = time.time()
-for i in G.Nodes():
-    temporaneo={"vicini":"","degree":"","t":""}
-    lista=[]
-    for b in range(0,i.GetDeg()):
-        lista.append(i.GetNbrNId(b))
-    temporaneo["vicini"]=lista
-    temporaneo["degree"]=i.GetDeg()
-    temporaneo["t"]=staticthreshold
-    informazioni_nodi[i.GetId()]=temporaneo
-
-while len(informazioni_nodi.keys())!=0:
-    for nodo in informazioni_nodi.keys():
-        if (informazioni_nodi[nodo]["t"] == 0):
-            flag_case1=True
-            eliminato=nodo
-            for vicino in informazioni_nodi[nodo]["vicini"]:
-                informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1 if informazioni_nodi[vicino]["t"] - 1 > 0 else 0
-            break
-    if not flag_case1:
-        for nodo in informazioni_nodi.keys():
-            if informazioni_nodi[nodo]["degree"] < informazioni_nodi[nodo]["t"]:
-                eliminato=nodo
-                flag_case2=True
-                TSet.append(nodo)
-                for vicino in informazioni_nodi[nodo]["vicini"]:
-                    informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1
-
-                break
-        if not flag_case2:
-            eliminato=caso3(informazioni_nodi)
-
-    for nodo in informazioni_nodi[eliminato]["vicini"]:
-        
-        informazioni_nodi[nodo]["degree"]=informazioni_nodi[nodo]["degree"]-1
-        
-        informazioni_nodi[nodo]["vicini"].remove(eliminato)
-        
-    
-    informazioni_nodi.pop(eliminato)
+def compute(j, G):
+    informazioni_nodi={}
+    TSet=[]
     flag_case1=False
     flag_case2=False
-print("--- %s seconds ---" % (time.time() - start_time))
-print("insieme di Tset:{}".format(TSet))
-print("lunghezza di Tset:{}".format(len(TSet)))
+    eliminato=None
+    start_time = time.time()
+    for i in G.Nodes():
+        temporaneo={"vicini":"","degree":"","t":""}
+        lista=[]
+        for b in range(0,i.GetDeg()):
+            lista.append(i.GetNbrNId(b))
+        temporaneo["vicini"]=lista
+        temporaneo["degree"]=i.GetDeg()
+        temporaneo["t"]=proportionalthreshold(i.GetDeg())
+        informazioni_nodi[i.GetId()]=temporaneo
 
+    while len(informazioni_nodi.keys())!=0:
+        for nodo in informazioni_nodi.keys():
+            if (informazioni_nodi[nodo]["t"] == 0):
+                flag_case1=True
+                eliminato=nodo
+                for vicino in informazioni_nodi[nodo]["vicini"]:
+                    informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1 if informazioni_nodi[vicino]["t"] - 1 > 0 else 0
+                break
+        if not flag_case1:
+            for nodo in informazioni_nodi.keys():
+                if informazioni_nodi[nodo]["degree"] < informazioni_nodi[nodo]["t"]:
+                    eliminato=nodo
+                    flag_case2=True
+                    TSet.append(nodo)
+                    for vicino in informazioni_nodi[nodo]["vicini"]:
+                        informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1
 
+                    break
+            if not flag_case2:
+                eliminato=caso3(informazioni_nodi)
 
+        for nodo in informazioni_nodi[eliminato]["vicini"]:
+            
+            informazioni_nodi[nodo]["degree"]=informazioni_nodi[nodo]["degree"]-1
+            
+            informazioni_nodi[nodo]["vicini"].remove(eliminato)
+            
+        
+        informazioni_nodi.pop(eliminato)
+        flag_case1=False
+        flag_case2=False
+    if j == 9:
+        f = open(output_file_result, 'a')
+        f.write("Soglia: ")
+        f.write(str(soglia))
+        f.write("\n")
+        f.write("Probabilità: ")
+        f.write(str(prob))
+        f.write("\n")
+        f.write("Tempo (media): ")
+        f.write(str(media_tempo/10))
+        f.write("\n")
+        f.write("Lunghezza di Tset (media): ")
+        f.write(str(media_risultati/10))
+        f.write("\n\n")
+        f.close
+        reset_globvar()
+    else:
+        update_globvar(len(TSet), time.time() - start_time)
+
+for i in range(1, 11):
+        soglia = i
+        prob +=0.05
+        #random.seed(i)
+        (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
+        differita(G)
+        prob = round(prob, 2)
+        for j in range(0, 10):
+            compute(j, G)
 
 
     
-
-          
-    
-# qua ci vuole un while, dobbiao vvedere come svuotarlo ed iterarlo. 
-    #if informazioni_nodi[nodo.GetId()]["t"]==0: #caso1
-        ##se il treshold del nodo è uguale a 0 allora il nodo
-        ## può essere attivato solo dai vicini. Dopo può influzneare i vicini non attivi.
-        ## per ogni nodo nei vicini del nodo selezionato il treshold dei vicini
-        ## è uguale a al massimo di k(u) - 1. 
-        ## altrimenti: caso 2
-        ### se esiste un nodo il quale degree sia minore del treshold allora
-        ### il vertice è aggiunto ad set S poichè non rimangono vicini per attivarlo. 
-        ### per ogni nodo vicino del nodo selezionato si abbassa la soglia di 1. 
-        ### altrimenti si prende il nodo il cui valore massimo della formula e si rimuove. 
-        ###  si dimuinsice di 1 il treshold e si rimuove il nodo. 
- 
