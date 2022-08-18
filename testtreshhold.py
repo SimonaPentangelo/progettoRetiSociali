@@ -7,7 +7,7 @@ random.seed(42)
 prob=0
 media_risultati = 0 
 media_tempo = 0
-output_file_result = "differita_proportional_threshold.txt"
+output_file_result = "differita_static_threshold.txt"
 
 def update_globvar(input1, input2):
     global media_risultati    
@@ -66,7 +66,7 @@ def compute(j, G):
             lista.append(i.GetNbrNId(b))
         temporaneo["vicini"]=lista
         temporaneo["degree"]=i.GetDeg()
-        temporaneo["t"]=proportionalthreshold(i.GetDeg())
+        temporaneo["t"]=staticthreshold()
         informazioni_nodi[i.GetId()]=temporaneo
 
     while len(informazioni_nodi.keys())!=0:
