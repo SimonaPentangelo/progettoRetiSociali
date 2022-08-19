@@ -142,7 +142,7 @@ La probabilità `prob` è una variabile globale che viene modificata prima delle
 
 ### Algoritmo di Target Set Selection 
 
-La funzione `compute(j)` implementa l'algoritmo TSS. Una volta caricato il grafo, viene chiamata la funzione per applicare il principio di decisione differita (se necessaria, altrimenti è necessario commentarla) e viene riempito il dizionario `informazioni_nodi`, dopo di che si itera per ogni nodo del grafo.
+La funzione `compute(j)` implementa l'algoritmo TSS. Una volta caricato il grafo, viene chiamata la funzione per applicare il principio di decisione differita (se necessaria, altrimenti è necessario commentarla) e [viene riempito il dizionario](#informazioni-dei-nodi) `informazioni_nodi`, dopo di che si itera per ogni nodo del grafo.
 
 ```python
 def compute(j):
