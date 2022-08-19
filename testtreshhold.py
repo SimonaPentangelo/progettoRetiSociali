@@ -126,7 +126,6 @@ def compute(j):
 for i in range(1, 11):
         soglia = i
         prob +=0.05
-        #random.seed(i)
         prob = round(prob, 2)
         for j in range(0, 10):
             compute(j)

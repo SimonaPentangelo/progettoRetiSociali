@@ -22,7 +22,7 @@ ___
   - [Conclusioni](#conclusioni)
 ___
 ## Introduzione
-Il problema del **Target Tes Selection (TSS)** consiste nel trovare, all'interno dei nodi di una rete, il più piccolo insieme di nodi i quali permettano di condizionare l'intera rete. Formalmente, dato un grafo G=(V, E), in cui per ogni vertice v, *d(v)* indica il grado del vertice e *t(v)* indica il threshold associato al vertice (ovvero, il numero minimo di adiacenti attivi di v necessari per influenzare v), il suo target set S è un insieme di nodi tali che attiveranno l'intera rete, ovvero, per il quale si verifica Influenced[S, ℓ]=V, per qualche ℓ ≥ 0.
+Il problema del **Target Set Selection (TSS)** consiste nel trovare, all'interno dei nodi di una rete, il più piccolo insieme di nodi i quali permettano di condizionare l'intera rete. Formalmente, dato un grafo G=(V, E), in cui per ogni vertice v, *d(v)* indica il grado del vertice e *t(v)* indica il threshold associato al vertice (ovvero, il numero minimo di adiacenti attivi di v necessari per influenzare v), il suo target set S è un insieme di nodi tali che attiveranno l'intera rete, ovvero, per il quale si verifica Influenced[S, ℓ]=V, per qualche ℓ ≥ 0.
 
 Il lavoro da noi svolto ha l'obiettivo di confrontare le dimensioni dei target set ottenuti sul dataset formato dalle [friend-list su Facebook](http://snap.stanford.edu/data/ego-Facebook.html) ed utilizzando l'algoritmo descritto nel paper [*Discovering Small Target Sets in Social Networks: A Fast and Effective Algorithm*](https://arxiv.org/abs/1610.03721).
 ___
@@ -74,12 +74,12 @@ for i in G.Nodes():
 Abbiamo deciso di eseguire l'algoritmo utilizzando diverse configurazioni per i threshold:
   + Senza principio di decisione differita
     - Threshold deterministico: soglie da 1 a 10
-    - Threshold eterogeneo: seed da 1 a 10
+    - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi originali dei nodi
     - Threshold proporzionale al grado: gradi originali dei nodi
   + Con principio di decisione differita: probabilità da 0.05 a 0.5
     - Threshold deterministico: soglie da 1 a 10
-    - Threshold eterogeneo: seed da 1 a 10
+    - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi originali dei nodi
     - Threshold proporzionale al grado: gradi originali dei nodi
 
@@ -89,7 +89,6 @@ Per quelli con principio di decisione differita, abbiamo eseguito 10 volte l'upd
 for i in range(1, 11):
         soglia = i #da 1 a 10
         prob +=0.05 #da 0.05 a 0.5, incrementando di 0.05 alla volta
-        #random.seed(i) da 1 a 10 in caso di threshold eterogeneo, altrimenti uguale a 42
         prob = round(prob, 2)
         for j in range(0, 10):
             compute(j, G)
@@ -106,7 +105,7 @@ Qui di seguito sono state riportate tutte le funzioni utilizzate per inizializza
     ```
 - Threshold eterogeneo
     
-    Il seed utilizzato senza principio di diffusione differita è 42, altrimenti viene modificato ad ogni iterazione (da 1 a 10).
+    Il seed utilizzato è 42.
     ```python
     def randomthreshold():
         return random.randint(1,10)
@@ -153,7 +152,7 @@ def compute(j):
 
     while len(informazioni_nodi.keys())!=0:
         for nodo in informazioni_nodi.keys():
-            #Caso in cui c'è un nodo con t = 0
+            #Caso 1: c'è un nodo con t = 0 
             if (informazioni_nodi[nodo]["t"] == 0):
                 flag_case1=True
                 eliminato=nodo
@@ -162,7 +161,7 @@ def compute(j):
                 break
         if not flag_case1:
             for nodo in informazioni_nodi.keys():
-                #Caso in cui c'è un nodo con degree < t
+                #Caso 2:c'è un nodo con degree < t
                 if informazioni_nodi[nodo]["degree"] < informazioni_nodi[nodo]["t"]:
                     eliminato=nodo
                     flag_case2=True
@@ -205,6 +204,9 @@ def compute(j):
     else:
         update_globvar(len(TSet), time.time() - start_time)
 ```
+Nel caso 1 verifichiamo che nessun nodo nel dizionario abbia threshold uguale ad 0, se viene trovato un nodo la variabile `eliminato` viene aggiornata con il nodo selezionato. I vicini del nodo selezionato avranno il threshold decrementato di 1, se la soglia aggiornata dovesse essere negativa, viene impostata a 0.
+Nel caso 2 verifichiamo che nessun nodo nel dizionario abbia il proprio degree minore del proprio threshold, se viene trovato un nodo la variabile `eliminato` viene aggiornata con il nodo selezionato. Tale nodo viene aggiunto al target set e i vicini avranno il threshold decrementato di 1.  
+
 
 Per il caso 3, abbiamo utilizzato una funzione:
 
