@@ -23,7 +23,7 @@ ___
   - [Conclusioni](#conclusioni)
 ___
 ## Introduzione
-Il problema del **Target Tes Selection (TSS)** consiste nel trovare, all'interno dei nodi di una rete, il più piccolo insieme di nodi i quali permettano di condizionare l'intera rete. Formalmente, dato un grafo G=(V, E), in cui per ogni vertice v, *d(v)* indica il grado del vertice e *t(v)* indica il threshold associato al vertice (ovvero, il numero minimo di adiacenti attivi di v necessari per attivare v), il suo target set S è un insieme di nodi tali che attiveranno l'intera rete, ovvero, per il quale si verifica Influenced[S, ℓ]=V, per qualche ℓ ≥ 0.
+Il problema del **Target Tes Selection (TSS)** consiste nel trovare, all'interno dei nodi di una rete, il più piccolo insieme di nodi i quali permettano di condizionare l'intera rete. Formalmente, dato un grafo G=(V, E), in cui per ogni vertice v, *d(v)* indica il grado del vertice e *t(v)* indica il threshold associato al vertice (ovvero, il numero minimo di adiacenti attivi di v necessari per influenzare v), il suo target set S è un insieme di nodi tali che attiveranno l'intera rete, ovvero, per il quale si verifica Influenced[S, ℓ]=V, per qualche ℓ ≥ 0.
 
 Il lavoro da noi svolto ha l'obiettivo di confrontare le dimensioni dei target set ottenuti sul dataset formato dalle [friend-list su Facebook](http://snap.stanford.edu/data/ego-Facebook.html) ed utilizzando l'algoritmo descritto nel paper [*Discovering Small Target Sets in Social Networks: A Fast and Effective Algorithm*](https://arxiv.org/abs/1610.03721).
 ___
@@ -72,7 +72,7 @@ for i in G.Nodes():
 
 ### Inizializzazione dei threshold
 
-Abbiamo deciso di utilizzare 10 configurazioni diverse:
+Abbiamo deciso di eseguire l'algoritmo 10 volte per ognuna delle seguenti configurazioni:
   + Senza principio di decisione differita
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed da 1 a 10
@@ -84,7 +84,7 @@ Abbiamo deciso di utilizzare 10 configurazioni diverse:
     - Threshold a maggioranza: gradi originali dei nodi
     - Threshold proporzionale al grado: gradi originali dei nodi
 
-Per ogni configurazione, abbiamo fatto 10 esecuzioni dell'algoritmo e calcolato le medie dei risultati (tempo di esecuzione e dimensione del target set).
+Una volta completate le 10 esecuzioni, sono state calcolate le medie relative alla taglia del target set e al tempo di esecuzione.
 
 ```python
 for i in range(1, 11):
@@ -128,6 +128,17 @@ Qui di seguito sono state riportate tutte le funzioni utilizzate per inizializza
     ```
 
 ### Principio di decisione differita
+
+Qui di seguito, l'algoritmo che abbiamo utilizzato per eliminare gli archi dal grafo tramite il principio di decisione differita: 
+
+```python
+def differita(G):
+    for i in G.Edges():
+      #Se all'i-esima iterazione il valore ottenuto è < prob
+        if random.random() < prob:
+          #l'arco i-esimo viene rimosso del grafo
+            G.DelEdge(i.GetSrcNId(),i.GetDstNId())
+```
 
 ### Algoritmo di Target Set Selection 
 

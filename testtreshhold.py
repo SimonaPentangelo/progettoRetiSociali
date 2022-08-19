@@ -7,7 +7,7 @@ random.seed(42)
 prob=0
 media_risultati = 0 
 media_tempo = 0
-output_file_result = "differita_eterogenea_threshold.txt"
+output_file_result = "testcaso_threshold.txt"
 
 def update_globvar(input1, input2):
     global media_risultati    
@@ -53,6 +53,9 @@ def caso3(dizionario):
     return chiave
 
 def compute(j, G):
+    (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
+    differita(G)
+    print("DIFFERITA FATTA")
     informazioni_nodi={}
     TSet=[]
     flag_case1=False
@@ -66,7 +69,7 @@ def compute(j, G):
             lista.append(i.GetNbrNId(b))
         temporaneo["vicini"]=lista
         temporaneo["degree"]=i.GetDeg()
-        temporaneo["t"]=randomthreshold()
+        temporaneo["t"]=proportionalthreshold(i.GetDeg())
         informazioni_nodi[i.GetId()]=temporaneo
 
     while len(informazioni_nodi.keys())!=0:
@@ -117,14 +120,13 @@ def compute(j, G):
         f.close
         reset_globvar()
     else:
+        print(len(TSet))
         update_globvar(len(TSet), time.time() - start_time)
 
 for i in range(1, 11):
         soglia = i
         prob +=0.05
         #random.seed(i)
-        (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-        differita(G)
         prob = round(prob, 2)
         for j in range(0, 10):
             compute(j, G)
