@@ -1,0 +1,50 @@
+Soglia: 1
+Probabilità: 0.05
+Tempo (media): 0.5752866268157959
+Lunghezza di Tset (media): 407.0
+
+Soglia: 2
+Probabilità: 0.1
+Tempo (media): 0.5238477468490601
+Lunghezza di Tset (media): 436.3
+
+Soglia: 3
+Probabilità: 0.15
+Tempo (media): 0.5195884704589844
+Lunghezza di Tset (media): 464.9
+
+Soglia: 4
+Probabilità: 0.2
+Tempo (media): 0.5179837465286254
+Lunghezza di Tset (media): 479.0
+
+Soglia: 5
+Probabilità: 0.25
+Tempo (media): 0.5215721368789673
+Lunghezza di Tset (media): 505.2
+
+Soglia: 6
+Probabilità: 0.3
+Tempo (media): 0.9612158298492431
+Lunghezza di Tset (media): 536.3
+
+Soglia: 7
+Probabilità: 0.35
+Tempo (media): 1.0432303190231322
+Lunghezza di Tset (media): 559.4
+
+Soglia: 8
+Probabilità: 0.4
+Tempo (media): 0.6540526628494263
+Lunghezza di Tset (media): 582.5
+
+Soglia: 9
+Probabilità: 0.45
+Tempo (media): 0.5915228605270386
+Lunghezza di Tset (media): 605.1
+
+Soglia: 10
+Probabilità: 0.5
+Tempo (media): 1.0399950981140136
+Lunghezza di Tset (media): 647.1
+
