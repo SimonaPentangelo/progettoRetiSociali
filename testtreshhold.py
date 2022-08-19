@@ -7,7 +7,11 @@ random.seed(42)
 prob=0
 media_risultati = 0 
 media_tempo = 0
+<<<<<<< HEAD
 output_file_result = "testcaso_threshold.txt"
+=======
+output_file_result = "NONdifferita_prop_threshold.txt"
+>>>>>>> 743f47b1b49b9cf4defa29b049fe91b07d293760
 
 def update_globvar(input1, input2):
     global media_risultati    
@@ -127,6 +131,11 @@ for i in range(1, 11):
         soglia = i
         prob +=0.05
         #random.seed(i)
+<<<<<<< HEAD
+=======
+        (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
+        #differita(G)
+>>>>>>> 743f47b1b49b9cf4defa29b049fe91b07d293760
         prob = round(prob, 2)
         for j in range(0, 10):
             compute(j, G)
