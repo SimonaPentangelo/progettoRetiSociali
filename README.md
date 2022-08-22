@@ -237,8 +237,11 @@ ___
 ![nonDifferito](risultati/threshold_statica_nondifferiti.png)  |  ![differito](risultati/Differita_Statica.png)
 
 | Soglie | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| Grafo non differito |  |  |  |  |  |  |  |  |  |  |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Grafo non differito | 3 | 87 | 206 | 320 | 426 | 540 | 665 | 764 | 873 | 967 |
+
+| Probabilità | 0.05 | 0.10 | 0.15 | 0.20 | 0.25 | 0.30 | 0.35 | 0.40 | 0.45 | 0.50 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Grafo differito | 7 | 99 | 223 | 357 | 501 | 652 | 810 | 969 | 1132 | 1294 |  
 
 ### Threshold eterogeneo
@@ -261,51 +264,7 @@ ___
 
 ___  
 
-## Benchmarks  
-
-Per osservare strong e weak scaling dell'algoritmo parallelo, è stato utilizzato un cluster di **t2.xlarge**.  
-Per valutare lo strong scaling, sono state utilizzate fino a 4 istanze (utilizzando quindi da 1 a 16 core) e sono stati fatti due test utilizzando un numero di elementi differenti (20000 e 30000).  
-Per valutare il weak scaling, sono state usate 4 istanze, facendo in modo che ogni core dovesse lavorare su 2000 bodies (quindi partendo da un core con 2000 elementi fino a 16 core con 32000 body).
-
-### Strong Scaling con 20000 body  
-
-| vCPUs | 1 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| Tempo | 78,53 | 39,28 | 19,65 | 14,66 | 11,19 | 8,93 | 7,51 | 6,42 | 5,67 |
-| Efficienza | 100,00% | 99,92% | 99,84% | 89,04% | 89,30% | 88,47% | 89,04% | 85,79% | 87,00% |  
-
-*Tempo medio di esecuzione (in secondi)*           |  *Efficienza (in percentuale)*
-:-------------------------:|:-------------------------:
-![StrongScaling](grafici/strongScaling20000.png)  |  ![StrongScaling](grafici/strongScaling20000(1).png)  
-
-  
- ### Strong Scaling con 30000 body  
-
-| vCPUs | 1 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| Tempo | 176,70 | 88,42 | 44,24 | 33,08 | 24,73 | 19,97 | 16,76 | 14,71 | 12,69 |
-| Efficienza | 100,00% | 99,92% | 99,84% | 89,04% | 89,30% | 88,47% | 89,04% | 85,79% | 87,00% |  
-
-*Tempo medio di esecuzione (in secondi)*           |  *Efficienza (in percentuale)*
-:-------------------------:|:-------------------------:
-![StrongScaling](grafici/strongScaling30000.png)  |  ![StrongScaling](grafici/strongScaling30000(1).png) 
-  
-
-### Weak Scaling  
-
-| vCPUs | 1 | 2 | 4 | 6 | 8 | 10 | 12 | 14 | 16 |
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| Tempo | 0,79 | 1,57 | 3,15 | 4,75 | 6,34 | 7,94 | 9,53 | 11,10 | 12,70 |
-| Efficienza | 100,00% | 50,03% | 24,97% | 16,58% | 12,42% | 9,91% | 8,26% | 7,09% | 6,19% |
-  
-
-*Tempo medio di esecuzione (in secondi)*           |  *Efficienza (in percentuale)*
-:-------------------------:|:-------------------------:
-![WeakScaling](grafici/weakscaling1.png)  |  ![WeakScaling](grafici/weakscaling2.png) 
-___  
-
 ## Conclusioni  
 
-Come è possibile osservare dai grafici e dai valori ottenuti, l'algoritmo presenta buoni valori in termini di efficienza, mantenendosi circa sul 99% per due e quattro vCPUs e scendendo solo fino all'85% circa con quattordici core,  e di tempo di esecuzione,  ottenendo una buona riduzione nel tempo di esecuzione nel momento in cui vengono utilizzati 2 core e mostrando un continuo decremento al crescere delle vCPUs (seppur man mano sempre minore), per quanto riguarda la strong scalability.
-Per quanto riguarda invece la weak scalability, i risultati non sono molto soddisfacenti, in quanto vi è una crescita costante in termini di tempo di esecuzione e un calo delle performance non indifferente: nel passare a 2 vCPUs con 40000 bodies, il calo è del 50% circa, mentre al crescere dei core (e dei bodies di conseguenza) la distanza tra le percentuali ottenute risulta essere sempre minore.
+
 ___
