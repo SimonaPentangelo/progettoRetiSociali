@@ -228,20 +228,36 @@ def caso3(dizionario):
 Una volta inizializzate le variabili `chiave` e `massimo` con i risultait ottenuti dal primo nodo disponibile, itera per tutti i nodi presenti nel grafo, aggiornando le variabili qualora un nodo ottenga un valore maggiore come risultato della funzione *threshold/[degree\*(degree+1)*. Una volta completato il ciclo, viene restituito il nodo che ha ottenuto il risultato maggiore. 
 ___ 
 
-### Risultati
+## Risultati
 
-*File di input - np = 1*             |  *File di output - np = 1*
+### Threshold costante
+
+*Senza principio di decisione differita*             |  *Con principio di decisione differita*
 :-------------------------:|:-------------------------:
-![inFile](risultati/10infile1proc.png)  |  ![outFile](risultati/10outfile1proc.png)
+![nonDifferito](risultati/threshold_statica_nondifferiti.png)  |  ![differito](risultati/Differita_Statica.png)
 
-*File di input - np = 2*             |  *File di output - np = 2*
+| Soglie | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| Grafo non differito |  |  |  |  |  |  |  |  |  |  |
+| Grafo differito | 7 | 99 | 223 | 357 | 501 | 652 | 810 | 969 | 1132 | 1294 |  
+
+### Threshold eterogeneo
+
+*Senza principio di decisione differita*             |  *Con principio di decisione differita*
 :-------------------------:|:-------------------------:
-![inFile](risultati/10infile2proc.png)  |  ![outFile](risultati/10outfile2proc.png)
+![nonDifferito](risultati/treshold_eterogenea_nondifferiti.png)  |  ![differito](risultati/Differita_Random.png)
 
-*File di input - np = 5*             |  *File di output - np = 5*
-:-------------------------:|:-------------------------:
-![inFile](risultati/10infile5proc.png)  |  ![outFile](risultati/10outfile5proc.png)
+### Threshold a maggioranza
 
+*Con principio di decisione differita* |
+| :------------------------- |
+![differito](risultati/Differita_Maggioranza.png) |
+
+### Threshold proporzionale al grado
+
+*Con principio di decisione differita* |
+| :------------------------- |
+![differito](risultati/Differita-Proporzionale.png) |
 
 ___  
 
