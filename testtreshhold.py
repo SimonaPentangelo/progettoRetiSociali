@@ -7,7 +7,8 @@ random.seed(42)
 prob=0
 media_risultati = 0 
 media_tempo = 0
-output_file_result = "eterogeno.txt"
+output_file_result = "Proporzionale_Differita.txt"
+(G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
 
 def update_globvar(input1, input2):
     global media_risultati    
@@ -37,7 +38,7 @@ def maggioranzathreshold(degree):
     return round(degree * (1/2))
 
 def proportionalthreshold(degree):
-    return round(degree * (1/5))
+    return round(degree * (1/(2+staticthreshold())))
 
 def randomthreshold():
     return random.randint(1,10)
@@ -52,10 +53,7 @@ def caso3(dizionario):
             massimo=temporaneo
     return chiave
 
-def compute(j):
-    (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-    differita(G)
-    print("DIFFERITA FATTA")
+def compute(G,j):
     informazioni_nodi={}
     TSet=[]
     flag_case1=False
@@ -69,7 +67,7 @@ def compute(j):
             lista.append(i.GetNbrNId(b))
         temporaneo["vicini"]=lista
         temporaneo["degree"]=i.GetDeg()
-        temporaneo["t"]=staticthreshold()
+        temporaneo["t"]=proportionalthreshold(i.GetDeg())
         informazioni_nodi[i.GetId()]=temporaneo
 
     while len(informazioni_nodi.keys())!=0:
@@ -123,12 +121,16 @@ def compute(j):
         print(len(TSet))
         update_globvar(len(TSet), time.time() - start_time)
 
+
 for i in range(1, 11):
-        soglia = i
+        #soglia = i
         prob +=0.05
         prob = round(prob, 2)
         for j in range(0, 10):
-            compute(j)
+            soglia = j+1
+            for k in range (0,10):
+                differita(G)
+                compute(G,k)
 
 
     
