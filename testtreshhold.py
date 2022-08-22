@@ -7,7 +7,7 @@ random.seed(42)
 prob=0
 media_risultati = 0 
 media_tempo = 0
-output_file_result = "Proporzionale_Differita.txt"
+output_file_result = "Maggioranza_Differita.txt"
 (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
 
 def update_globvar(input1, input2):
@@ -67,7 +67,7 @@ def compute(G,j):
             lista.append(i.GetNbrNId(b))
         temporaneo["vicini"]=lista
         temporaneo["degree"]=i.GetDeg()
-        temporaneo["t"]=proportionalthreshold(i.GetDeg())
+        temporaneo["t"]=maggioranzathreshold(i.GetDeg())
         informazioni_nodi[i.GetId()]=temporaneo
 
     while len(informazioni_nodi.keys())!=0:
@@ -117,20 +117,22 @@ def compute(G,j):
         f.write("\n\n")
         f.close
         reset_globvar()
+        print_globvar()
     else:
-        print(len(TSet))
+        #print(len(TSet))
         update_globvar(len(TSet), time.time() - start_time)
+        print_globvar()
 
 
 for i in range(1, 11):
         #soglia = i
         prob +=0.05
         prob = round(prob, 2)
-        for j in range(0, 10):
-            soglia = j+1
-            for k in range (0,10):
-                differita(G)
-                compute(G,k)
+        #for j in range(0, 10):
+        #    soglia = j+1
+        for k in range (0,10):
+            differita(G)
+            compute(G,k)
 
 
     
