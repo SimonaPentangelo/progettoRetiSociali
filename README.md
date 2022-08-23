@@ -76,11 +76,12 @@ Abbiamo deciso di eseguire l'algoritmo utilizzando diverse configurazioni per i 
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi originali dei nodi
+    - Threshold proporzionale al grado: gradi originali dei nodi e con frazioni da 1/3 ad 1/11
   + Con principio di decisione differita: probabilità da 0.05 a 0.5
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed = 42
-    - Threshold a maggioranza: gradi originali dei nodi
-    - Threshold proporzionale al grado: gradi originali dei nodi
+    - Threshold a maggioranza: gradi del nuovo grafo
+    - Threshold proporzionale al grado: gradi odel nuovo grafo e con frazioni da 1/3 ad 1/11
 
 Per quelli con principio di decisione differita, abbiamo eseguito 10 volte l'update del grafo e l'esecuzione dell'algoritmo. Una volta completate le 10 esecuzioni, sono state calcolate le medie relative alla taglia del target set e al tempo di esecuzione (in secondi).
 
@@ -143,9 +144,7 @@ La probabilità `prob` è una variabile globale che viene modificata prima delle
 La funzione `compute(j)` implementa l'algoritmo TSS. Una volta caricato il grafo, viene chiamata la funzione per applicare il principio di decisione differita (se necessaria, altrimenti è necessario commentarla) e [viene riempito il dizionario](#informazioni-dei-nodi) `informazioni_nodi`, dopo di che si itera per ogni nodo del grafo.
 
 ```python
-def compute(j):
-    (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-    differita(G) #principio di diffusione differita
+def compute(G, j):
     
     #SNIP, qui c'è il ciclo for per riempire il dizionario informazioni_nodi
 
@@ -183,25 +182,41 @@ def compute(j):
         informazioni_nodi.pop(eliminato)
         flag_case1=False
         flag_case2=False
-    #Alla decima iterazione, abbiamo scritto nel file i valori medi
+    #Alla decima iterazione, nel caso di grafo differito, abbiamo scritto nel file i valori medi
     if j == 9:
+            f = open(output_file_result, 'a')
+            f.write("Soglia: ")
+            f.write(str(soglia))
+            f.write("\n")
+            f.write("Probabilità: ")
+            f.write(str(prob))
+            f.write("\n")
+            f.write("Tempo (media): ")
+            f.write(str(media_tempo/10))
+            f.write("\n")
+            f.write("Lunghezza di Tset (media): ")
+            f.write(str(media_risultati/10))
+            f.write("\n\n")
+            f.close
+            reset_globvar()
+            print_globvar()
+    #Caso in cui non usiamo il principio di decisione differita
+    if j == -1:
         f = open(output_file_result, 'a')
         f.write("Soglia: ")
         f.write(str(soglia))
         f.write("\n")
-        f.write("Probabilità: ")
-        f.write(str(prob))
+        f.write("Tempo: ")
+        f.write(str(time.time() - start_time))
         f.write("\n")
-        f.write("Tempo (media): ")
-        f.write(str(media_tempo/10))
-        f.write("\n")
-        f.write("Lunghezza di Tset (media): ")
-        f.write(str(media_risultati/10))
+        f.write("Lunghezza di Tset: ")
+        f.write(str(len(TSet)))
         f.write("\n\n")
         f.close
-        reset_globvar()
+    #Else per sommare tutti i risultati che servono per le medie
     else:
         update_globvar(len(TSet), time.time() - start_time)
+        print_globvar()
 ```
 Nel caso 1 verifichiamo che nessun nodo nel dizionario abbia threshold uguale ad 0, se viene trovato un nodo la variabile `eliminato` viene aggiornata con il nodo selezionato. I vicini del nodo selezionato avranno il threshold decrementato di 1, se la soglia aggiornata dovesse essere negativa, viene impostata a 0.
 Nel caso 2 verifichiamo che nessun nodo nel dizionario abbia il proprio degree minore del proprio threshold, se viene trovato un nodo la variabile `eliminato` viene aggiornata con il nodo selezionato. Tale nodo viene aggiunto al target set e i vicini avranno il threshold decrementato di 1.  
@@ -225,6 +240,9 @@ def caso3(dizionario):
 ```
 
 Una volta inizializzate le variabili `chiave` e `massimo` con i risultait ottenuti dal primo nodo disponibile, itera per tutti i nodi presenti nel grafo, aggiornando le variabili qualora un nodo ottenga un valore maggiore come risultato della funzione *threshold/[degree\*(degree+1)*. Una volta completato il ciclo, viene restituito il nodo che ha ottenuto il risultato maggiore. 
+
+Nel caso in cui utilizziamo il principio di decisione differita, è necessario fare le medie dei risultati ottenuti su 10 grafi diversi e poi scrivere i risultati su file.
+Senza principio di decisione differita, i risultati ottenuti ad ogni iterazioni vengono scritti sul file.
 ___ 
 
 ## Risultati

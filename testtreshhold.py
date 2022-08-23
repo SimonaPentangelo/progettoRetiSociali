@@ -2,6 +2,7 @@ from cmath import inf
 import random
 import time
 import snap
+from tqdm import tqdm
 soglia=5
 random.seed(42)
 prob=0
@@ -43,13 +44,23 @@ def proportionalthreshold(degree):
 def randomthreshold():
     return random.randint(1,10)
 
-def caso3(dizionario):
+'''def caso3(dizionario):
     chiave = list(dizionario.keys())[0]
     massimo= dizionario[chiave]["t"]/((dizionario[chiave]["degree"])*((dizionario[chiave]["degree"])+1))
     for chiavi in dizionario.keys():
         temporaneo= dizionario[chiavi]["t"]/((dizionario[chiavi]["degree"])*((dizionario[chiavi]["degree"])+1))
         if temporaneo>massimo:
             chiave=chiavi
+            massimo=temporaneo
+    return chiave'''
+
+def caso3(G, dizionario):
+    chiave = -1
+    massimo = -1
+    for chiavi in G.Nodes():
+        temporaneo = dizionario[chiavi.GetId()]["t"]/((dizionario[chiavi.GetId()]["degree"])*((dizionario[chiavi.GetId()]["degree"])+1))
+        if temporaneo>massimo:
+            chiave=chiavi.GetId()
             massimo=temporaneo
     return chiave
 
@@ -70,7 +81,44 @@ def compute(G,j):
         temporaneo["t"]=proportionalthreshold(i.GetDeg())
         informazioni_nodi[i.GetId()]=temporaneo
 
-    while len(informazioni_nodi.keys())!=0:
+    while G.GetNodes() !=0:
+        for nodo in tqdm(G.Nodes()):
+            if (informazioni_nodi[nodo.GetId()]["t"] == 0):
+                flag_case1=True
+                eliminato=nodo.GetId()
+                for vicino in informazioni_nodi[nodo.GetId()]["vicini"]:
+                    informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1 if informazioni_nodi[vicino]["t"] - 1 > 0 else 0
+                for nodo in informazioni_nodi[eliminato]["vicini"]:
+                    informazioni_nodi[nodo]["degree"]=informazioni_nodi[nodo]["degree"]-1
+                    informazioni_nodi[nodo]["vicini"].remove(eliminato)
+                informazioni_nodi.pop(eliminato)
+                G.DelNode(eliminato)
+
+            if not flag_case1:
+                if informazioni_nodi[nodo.GetId()]["degree"] < informazioni_nodi[nodo.GetId()]["t"]:
+                    eliminato=nodo.GetId()
+                    TSet.append(nodo.GetId())
+                    for vicino in informazioni_nodi[nodo.GetId()]["vicini"]:
+                        informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1
+                    for nodo in informazioni_nodi[eliminato]["vicini"]:
+                        informazioni_nodi[nodo]["degree"]=informazioni_nodi[nodo]["degree"]-1
+                        informazioni_nodi[nodo]["vicini"].remove(eliminato)
+                    informazioni_nodi.pop(eliminato)
+                    G.DelNode(eliminato)
+
+            flag_case1=False      
+      
+        eliminato = caso3(G, informazioni_nodi)
+
+        for nodo in informazioni_nodi[eliminato]["vicini"]:
+            informazioni_nodi[nodo]["degree"]=informazioni_nodi[nodo]["degree"]-1
+            informazioni_nodi[nodo]["vicini"].remove(eliminato)
+            
+        informazioni_nodi.pop(eliminato)
+        G.DelNode(eliminato)
+        flag_case1=False
+
+    '''while len(informazioni_nodi.keys())!=0:
         for nodo in informazioni_nodi.keys():
             if (informazioni_nodi[nodo]["t"] == 0):
                 flag_case1=True
@@ -99,7 +147,7 @@ def compute(G,j):
             
         informazioni_nodi.pop(eliminato)
         flag_case1=False
-        flag_case2=False
+        flag_case2=False'''
     if j == 9:
         f = open(output_file_result, 'a')
         f.write("Soglia: ")
