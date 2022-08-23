@@ -97,7 +97,6 @@ def compute(G,j):
             
             informazioni_nodi[nodo]["vicini"].remove(eliminato)
             
-        
         informazioni_nodi.pop(eliminato)
         flag_case1=False
         flag_case2=False
