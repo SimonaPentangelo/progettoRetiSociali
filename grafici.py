@@ -9,6 +9,7 @@ from matplotlib import pylab
 figure(figsize=(10, 20), dpi=80)
 
 valore=[6.6,99.4,222.6,356.9,501.2,652.1,809.5,968.6,1132.2,1293.6]
+val_propr_diff=[221.6,54.6,3.8,0.0]
 
 #assex=np.array(range(1,11))
 assex=[0.05,0.1,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50]
