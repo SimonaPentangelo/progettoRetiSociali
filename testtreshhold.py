@@ -118,6 +118,18 @@ def compute(G,j):
         f.close
         reset_globvar()
         print_globvar()
+    if j == -1:
+        f = open(output_file_result, 'a')
+        f.write("Soglia: ")
+        f.write(str(soglia))
+        f.write("\n")
+        f.write("Tempo: ")
+        f.write(str(time.time() - start_time))
+        f.write("\n")
+        f.write("Lunghezza di Tset: ")
+        f.write(str(len(TSet)))
+        f.write("\n\n")
+        f.close
     else:
         #print(len(TSet))
         update_globvar(len(TSet), time.time() - start_time)
@@ -126,7 +138,7 @@ def compute(G,j):
 ''' TEST NON DIFFERITA'''
 for j in range(0, 10):
     soglia = j+1
-    compute(G,k)
+    compute(G,-1)
 
 ''' TEST DIFFERITA
 for i in range(1, 11):
