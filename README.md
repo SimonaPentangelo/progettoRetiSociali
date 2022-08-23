@@ -76,7 +76,6 @@ Abbiamo deciso di eseguire l'algoritmo utilizzando diverse configurazioni per i 
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi originali dei nodi
-    - Threshold proporzionale al grado: gradi originali dei nodi
   + Con principio di decisione differita: probabilità da 0.05 a 0.5
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed = 42
@@ -122,7 +121,7 @@ Qui di seguito sono state riportate tutte le funzioni utilizzate per inizializza
 
     ```python
     def proportionalthreshold(degree):
-        return round(degree * (1/5))
+        return round(degree * (1/(2+staticthreshold())))
     ```
 
 ### Principio di decisione differita
