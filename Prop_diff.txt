@@ -14,3 +14,187 @@ Soglia: 4
 Prob: 0.1
 Lunghezza di Tset (media): 605.0
 
+Soglia: 5
+Prob: 0.1
+Lunghezza di Tset (media): 672.8
+
+Soglia: 6
+Prob: 0.1
+Lunghezza di Tset (media): 729.4
+
+Soglia: 7
+Prob: 0.1
+Lunghezza di Tset (media): 777.4
+
+Soglia: 8
+Prob: 0.1
+Lunghezza di Tset (media): 818.7
+
+Soglia: 9
+Prob: 0.1
+Lunghezza di Tset (media): 854.6
+
+Soglia: 10
+Prob: 0.1
+Lunghezza di Tset (media): 886.9
+
+Soglia: 1
+Prob: 0.2
+Lunghezza di Tset (media): 1127.0
+
+Soglia: 2
+Prob: 0.2
+Lunghezza di Tset (media): 1278.4
+
+Soglia: 3
+Prob: 0.2
+Lunghezza di Tset (media): 1383.8
+
+Soglia: 4
+Prob: 0.2
+Lunghezza di Tset (media): 1463.0
+
+Soglia: 5
+Prob: 0.2
+Lunghezza di Tset (media): 1525.8
+
+Soglia: 6
+Prob: 0.2
+Lunghezza di Tset (media): 1577.5
+
+Soglia: 7
+Prob: 0.2
+Lunghezza di Tset (media): 1621.4
+
+Soglia: 8
+Prob: 0.2
+Lunghezza di Tset (media): 1659.8
+
+Soglia: 9
+Prob: 0.2
+Lunghezza di Tset (media): 1693.1
+
+Soglia: 10
+Prob: 0.2
+Lunghezza di Tset (media): 1724.9
+
+Soglia: 1
+Prob: 0.3
+Lunghezza di Tset (media): 1957.9
+
+Soglia: 2
+Prob: 0.3
+Lunghezza di Tset (media): 2100.2
+
+Soglia: 3
+Prob: 0.3
+Lunghezza di Tset (media): 2200.7
+
+Soglia: 4
+Prob: 0.3
+Lunghezza di Tset (media): 2276.6
+
+Soglia: 5
+Prob: 0.3
+Lunghezza di Tset (media): 2336.3
+
+Soglia: 6
+Prob: 0.3
+Lunghezza di Tset (media): 2385.3
+
+Soglia: 7
+Prob: 0.3
+Lunghezza di Tset (media): 2426.2
+
+Soglia: 8
+Prob: 0.3
+Lunghezza di Tset (media): 2461.8
+
+Soglia: 9
+Prob: 0.3
+Lunghezza di Tset (media): 2493.8
+
+Soglia: 10
+Prob: 0.3
+Lunghezza di Tset (media): 2523.9
+
+Soglia: 1
+Prob: 0.4
+Lunghezza di Tset (media): 2747.3
+
+Soglia: 2
+Prob: 0.4
+Lunghezza di Tset (media): 2886.5
+
+Soglia: 3
+Prob: 0.4
+Lunghezza di Tset (media): 2980.8
+
+Soglia: 4
+Prob: 0.4
+Lunghezza di Tset (media): 3052.0
+
+Soglia: 5
+Prob: 0.4
+Lunghezza di Tset (media): 3109.2
+
+Soglia: 6
+Prob: 0.4
+Lunghezza di Tset (media): 3156.3
+
+Soglia: 7
+Prob: 0.4
+Lunghezza di Tset (media): 3195.9
+
+Soglia: 8
+Prob: 0.4
+Lunghezza di Tset (media): 3230.2
+
+Soglia: 9
+Prob: 0.4
+Lunghezza di Tset (media): 3260.1
+
+Soglia: 10
+Prob: 0.4
+Lunghezza di Tset (media): 3286.6
+
+Soglia: 1
+Prob: 0.5
+Lunghezza di Tset (media): 3502.2
+
+Soglia: 2
+Prob: 0.5
+Lunghezza di Tset (media): 3639.0
+
+Soglia: 3
+Prob: 0.5
+Lunghezza di Tset (media): 3733.8
+
+Soglia: 4
+Prob: 0.5
+Lunghezza di Tset (media): 3802.6
+
+Soglia: 5
+Prob: 0.5
+Lunghezza di Tset (media): 3856.6
+
+Soglia: 6
+Prob: 0.5
+Lunghezza di Tset (media): 3900.4
+
+Soglia: 7
+Prob: 0.5
+Lunghezza di Tset (media): 3938.0
+
+Soglia: 8
+Prob: 0.5
+Lunghezza di Tset (media): 3972.0
+
+Soglia: 9
+Prob: 0.5
+Lunghezza di Tset (media): 4002.1
+
+Soglia: 10
+Prob: 0.5
+Lunghezza di Tset (media): 4028.0
+
