@@ -10,7 +10,6 @@ ___
   - [Introduzione](#introduzione)
   - [Studio effettuato](#studio-effettuato)
   - [Dettagli implementativi](#dettagli-implementativi)
-    - [Informazioni dei nodi](#informazioni-dei-nodi)
     - [Inizializzazione dei threshold](#inizializzazione-dei-threshdold)
     - [Principio di decisione differita](#principio-di-decisione-differita)
     - [Algoritmo di Target Set Selection](#algoritmo-di-target-set-selection)
@@ -41,32 +40,10 @@ l’insieme soluzione e lo restituisce in output.
 ___
 ## Dettagli implementativi 
 
-Per lavorare con il dataset disponibile su [SNAP](http://snap.stanford.edu/index.html), abbiamo utilizzato il linguaggio **Python** e il modulo [Snap.py](https://snap.stanford.edu/snappy/doc/reference/index-ref.html).
+Per lavorare con il dataset disponibile su [SNAP](http://snap.stanford.edu/index.html), abbiamo utilizzato il linguaggio **Python** e il modulo [Snap.py](https://snap.stanford.edu/snappy/doc/reference/index-ref.html), il quale ci ha permesso non solo di caricare il grafo, ma anche di accedere alle varie informazioni utili ai fini dell'algoritmo, come il degree dei nodi ed il neighborhood di un nodo.
 
 ```python
-(G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-```
-
-### Informazioni dei nodi 
-
-Tramite il modulo **Snap.py**, abbiamo raccolto tutte le informazioni dei nodi. Abbiamo deciso di utilizzare il dizionario `informazioni_nodi` per poter accedere facilmente al grado, al threshold e all'insieme dei vicini di un determinato nodo. 
-
-Per poter ottenere le informazioni desiderate, basta utilizzare il nodo di interesse come chiave.
-
-```python
-#Per ogni nodo del grafo
-for i in G.Nodes():
-        #dizionario con le informazioni dei nodi
-        temporaneo={"vicini":"","degree":"","t":""}
-        lista=[]
-        #per ogni vicino del nodo corrente
-        for b in range(0,i.GetDeg()):
-            #crea la lista dei nodi adiacenti
-            lista.append(i.GetNbrNId(b))
-        temporaneo["vicini"]=lista
-        temporaneo["degree"]=i.GetDeg()
-        temporaneo["t"]=#inserire qui la funzione di threshold
-        informazioni_nodi[i.GetId()]=temporaneo
+(G, Map) = snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
 ```
 
 ### Inizializzazione dei threshold
@@ -77,24 +54,47 @@ Abbiamo deciso di eseguire l'algoritmo utilizzando diverse configurazioni per i 
     - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi originali dei nodi
     - Threshold proporzionale al grado: gradi originali dei nodi e con frazioni da 1/3 ad 1/11
-  + Con principio di decisione differita: probabilità da 0.05 a 0.5
+  + Con principio di decisione differita: probabilità da 0.1 a 0.5
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi del nuovo grafo
-    - Threshold proporzionale al grado: gradi odel nuovo grafo e con frazioni da 1/3 ad 1/11
+    - Threshold proporzionale al grado: gradi del nuovo grafo e con frazioni da 1/3 ad 1/11
 
-Per quelli con principio di decisione differita, abbiamo eseguito 10 volte l'update del grafo e l'esecuzione dell'algoritmo. Una volta completate le 10 esecuzioni, sono state calcolate le medie relative alla taglia del target set e al tempo di esecuzione (in secondi).
+Per quelli con principio di decisione differita, abbiamo eseguito 10 volte l'update del grafo e l'esecuzione dell'algoritmo. Una volta completate le 10 esecuzioni, è stata calcolata la relativa alla taglia del target set. Qui abbiamo riportato il codice utilizzato per invocare le funzioni per il TSS.
 
 ```python
-for i in range(1, 11):
-        soglia = i #da 1 a 10
-        prob +=0.05 #da 0.05 a 0.5, incrementando di 0.05 alla volta
+''' TEST NON DIFFERITA'''
+for j in range(0, 10):
+    (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
+    soglia = 1
+    iniziathold(G) #Inizializzazione dei threshold
+    targetsetsel(G)
+    thold = []
+
+''' TEST DIFFERITA'''
+for i in range(0, 5):
+        prob += 0.1
         prob = round(prob, 2)
         for j in range(0, 10):
-            compute(j, G)
+            soglia = j + 1
+            for k in range (0,10):
+                differita(G) #Applicazione del principio di decisione differita
+                iniziathold(G) #Inizializzazione dei threshold
+                targetsetseldiff(G,k)
+                thold = []
+
 ```
 
-Qui di seguito sono state riportate tutte le funzioni utilizzate per inizializzare i threshold:
+Qui di seguito è stata riportata la funzione utilizzata per salvare il threshold per ognuno dei nodi del grafo:
+
+```python
+def iniziathold(G):
+    for nodo in G.Nodes():
+        #Salvataggio della soglia per il nodo corrente
+        thold.append('''chiamata a funzione di threshold di interesse''')
+```
+
+Tale funzione, effettua la chiamata ad una specifica funzione di threshold per ottenere il valore di soglia per il nodo corrente. 
 
  - Threshold deterministico
     
@@ -108,7 +108,7 @@ Qui di seguito sono state riportate tutte le funzioni utilizzate per inizializza
     Il seed utilizzato è 42.
     ```python
     def randomthreshold():
-        return random.randint(1,10)
+        return random.randint(1,10) #seed a 42
     ```
 
 - Threshold a maggioranza
@@ -122,7 +122,7 @@ Qui di seguito sono state riportate tutte le funzioni utilizzate per inizializza
 
     ```python
     def proportionalthreshold(degree):
-        return round(degree * (1/(2+staticthreshold())))
+        return round(degree * (1/(2+staticthreshold()))) #da 1/3 ad 1/11
     ```
 
 ### Principio di decisione differita
@@ -137,112 +137,108 @@ def differita(G):
           #l'arco i-esimo viene rimosso del grafo
             G.DelEdge(i.GetSrcNId(),i.GetDstNId())
 ```
-La probabilità `prob` è una variabile globale che viene modificata prima delle 10 esecuzioni per ogni funzione di threshold. Inizialmente è 0.05, viene incrementata di 0.05 ogni volta fino a 0.5.
+La probabilità `prob` è una variabile globale che viene modificata prima delle 10 esecuzioni per ogni funzione di threshold. Inizialmente è 0.1, viene incrementata di 0.1 ogni volta fino a 0.5.
 
 ### Algoritmo di Target Set Selection 
 
-La funzione `compute(j)` implementa l'algoritmo TSS. Una volta caricato il grafo, viene chiamata la funzione per applicare il principio di decisione differita (se necessaria, altrimenti è necessario commentarla) e [viene riempito il dizionario](#informazioni-dei-nodi) `informazioni_nodi`, dopo di che si itera per ogni nodo del grafo.
+Le funzioni `tergetsetsel(G)` e `tergetsetseldiff(G, k)` implementano l'algoritmo TSS. Una volta caricato il grafo, viene chiamata una delle due funzioni (la seconda nel caso in cui venga applicato il principio di decisione differita) e si itera per ogni nodo del grafo.
 
-```python
-def compute(G, j):
-    
-    #SNIP, qui c'è il ciclo for per riempire il dizionario informazioni_nodi
+- Senza principio di decisione differita
 
-    while len(informazioni_nodi.keys())!=0:
-        for nodo in informazioni_nodi.keys():
-            #Caso 1: c'è un nodo con t = 0 
-            if (informazioni_nodi[nodo]["t"] == 0):
-                flag_case1=True
-                eliminato=nodo
-                for vicino in informazioni_nodi[nodo]["vicini"]:
-                    informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1 if informazioni_nodi[vicino]["t"] - 1 > 0 else 0
-                break
-        if not flag_case1:
-            for nodo in informazioni_nodi.keys():
-                #Caso 2:c'è un nodo con degree < t
-                if informazioni_nodi[nodo]["degree"] < informazioni_nodi[nodo]["t"]:
-                    eliminato=nodo
-                    flag_case2=True
-                    TSet.append(nodo) #aggiunta al target set
-                    for vicino in informazioni_nodi[nodo]["vicini"]:
-                        informazioni_nodi[vicino]["t"]=informazioni_nodi[vicino]["t"] - 1
+    ```python
+    def targetsetsel(G):
+                targetset=[]
+                while G.GetNodes() != 0:
+                    eliminato = None
+                    for nodo in tqdm(G.Nodes()):
+                        if thold[nodo.GetId()] == 0: #CASO 1
+                            for vicino in nodo.GetOutEdges():
+                                thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0 #Update delle soglie
+                            eliminato = nodo.GetId()
+                            G.DelNode(eliminato) #Eliminazione del nodo dal grafo
+                        else:
+                            if thold[nodo.GetId()] > nodo.GetOutDeg(): #CASO 2
+                                targetset.append(nodo.GetId()) #Salvataggio nel target set
+                                eliminato = nodo.GetId()
+                                for vicino in nodo.GetOutEdges():
+                                    thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0 #Update delle soglie
+                                G.DelNode(eliminato) #Eliminazione del nodo dal grafo
+                    if eliminato == None:
+                        eliminato = caso3(G)
+                        G.DelNode(eliminato)
+                #Salvataggio dei risultati
+                f = open(output_file_result, 'a')
+                f.write("Soglia: ")
+                f.write(str(soglia))
+                f.write("\n")
+                f.write("Lunghezza di Tset: ")
+                f.write(str(len(targetset)))
+                f.write("\n\n")
+                f.close
+    ```
 
-                    break
-            if not flag_case2:
-                #Se non si sono verificati i casi precedenti
-                eliminato=caso3(informazioni_nodi)
-        
-        for nodo in informazioni_nodi[eliminato]["vicini"]:
-            
-            informazioni_nodi[nodo]["degree"]=informazioni_nodi[nodo]["degree"]-1
-            
-            informazioni_nodi[nodo]["vicini"].remove(eliminato)
-            
-        #Elimino il nodo designato dal grafo
-        informazioni_nodi.pop(eliminato)
-        flag_case1=False
-        flag_case2=False
-    #Alla decima iterazione, nel caso di grafo differito, abbiamo scritto nel file i valori medi
-    if j == 9:
-            f = open(output_file_result, 'a')
-            f.write("Soglia: ")
-            f.write(str(soglia))
-            f.write("\n")
-            f.write("Probabilità: ")
-            f.write(str(prob))
-            f.write("\n")
-            f.write("Tempo (media): ")
-            f.write(str(media_tempo/10))
-            f.write("\n")
-            f.write("Lunghezza di Tset (media): ")
-            f.write(str(media_risultati/10))
-            f.write("\n\n")
-            f.close
-            reset_globvar()
-            print_globvar()
-    #Caso in cui non usiamo il principio di decisione differita
-    if j == -1:
-        f = open(output_file_result, 'a')
-        f.write("Soglia: ")
-        f.write(str(soglia))
-        f.write("\n")
-        f.write("Tempo: ")
-        f.write(str(time.time() - start_time))
-        f.write("\n")
-        f.write("Lunghezza di Tset: ")
-        f.write(str(len(TSet)))
-        f.write("\n\n")
-        f.close
-    #Else per sommare tutti i risultati che servono per le medie
-    else:
-        update_globvar(len(TSet), time.time() - start_time)
-        print_globvar()
-```
-Nel caso 1 verifichiamo che nessun nodo nel dizionario abbia threshold uguale ad 0, se viene trovato un nodo la variabile `eliminato` viene aggiornata con il nodo selezionato. I vicini del nodo selezionato avranno il threshold decrementato di 1, se la soglia aggiornata dovesse essere negativa, viene impostata a 0.
-Nel caso 2 verifichiamo che nessun nodo nel dizionario abbia il proprio degree minore del proprio threshold, se viene trovato un nodo la variabile `eliminato` viene aggiornata con il nodo selezionato. Tale nodo viene aggiunto al target set e i vicini avranno il threshold decrementato di 1.  
+- Con principio di decisione differita
 
+    ```python     
+            def targetsetseldiff(G, k):
+                targetset=[]
+                while G.GetNodes() != 0:
+                    eliminato = None
+                    for nodo in tqdm(G.Nodes()):
+                        if thold[nodo.GetId()] == 0: #CASO 1
+                            for vicino in nodo.GetOutEdges():
+                                thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0 #Update delle soglie
+                            eliminato = nodo.GetId()
+                            G.DelNode(eliminato) #Eliminazione del nodo dal grafo
+                        else:
+                            if thold[nodo.GetId()] > nodo.GetOutDeg(): #CASO 2
+                                targetset.append(nodo.GetId()) #Salvataggio nel target set
+                                eliminato = nodo.GetId()
+                                for vicino in nodo.GetOutEdges():
+                                    thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0 #Update delle soglie
+                                G.DelNode(eliminato) #Eliminazione del nodo dal grafo
+                    if eliminato == None:
+                        eliminato = caso3(G) #CASO 3 (funzione apposita)
+                        G.DelNode(eliminato) #Eliminazione del nodo dal grafo
+                if k == 9: #Salvataggio dei risultati (dopo 10 iterazioni)
+                    f = open(output_file_result, 'a')
+                    f.write("Soglia: ")
+                    f.write(str(soglia))
+                    f.write("\n")
+                    f.write("Prob: ")
+                    f.write(str(prob))
+                    f.write("\n")
+                    f.write("Lunghezza di Tset (media): ")
+                    f.write(str(len(media_risultati))/10) #Calcolo della media
+                    f.write("\n\n")
+                    f.close
+                else: #Salvataggio per calcolare la media (non ho ancora finito le 10 iterazioni)
+                    update_globvar(len(targetset))
+                    print_globvar()
+    ```       
+
+Nel caso 1, se il nodo corrente nel grafo ha soglia 0, la variabile `eliminato` viene aggiornata con il nodo selezionato, i vicini del nodo selezionato avranno il threshold decrementato di 1, se la soglia aggiornata dovesse essere negativa, viene impostata a 0 e infine il nodo `eliminato` viene cancellato dal grafo.
+Nel caso 2, se il nodo corrente nel grafo **non** ha soglia 0 e proprio degree è minore del proprio threshold, la variabile `eliminato` viene aggiornata con il nodo selezionato. Tale nodo viene aggiunto al `targetset`, i vicini del nodo selezionato avranno il threshold decrementato di 1, se la soglia aggiornata dovesse essere negativa, viene impostata a 0 e infine il nodo `eliminato` viene cancellato dal grafo.
 
 Per il caso 3, abbiamo utilizzato una funzione:
 
 ```python
-def caso3(dizionario):
-    #il primo nodo è il nostro massimo iniziale
-    chiave = list(dizionario.keys())[0]
-    #threshold/[degree*(degree+1)]
-    massimo= dizionario[chiave]["t"]/((dizionario[chiave]["degree"])*((dizionario[chiave]["degree"])+1))
-    for chiavi in dizionario.keys():
-        temporaneo= dizionario[chiavi]["t"]/((dizionario[chiavi]["degree"])*((dizionario[chiavi]["degree"])+1))
-        if temporaneo>massimo:
-            chiave=chiavi
-            massimo=temporaneo
-    #quello che ottiene il valore massimo alla funzione, sarà eliminato dal grafo
-    return chiave
+def caso3(G):
+    chiave = -1
+    massimo = -1
+    for chiavi in G.Nodes():
+        #threshold / [ grado del nodo corrente * (grado del nodo corrente + 1) ]
+        temporaneo = thold[chiavi.GetId()]/(chiavi.GetOutDeg() * (chiavi.GetOutDeg() + 1))
+        if temporaneo > massimo: #Sostituzione del massimo
+            chiave = chiavi.GetId()
+            massimo = temporaneo
+    return chiave #Restituzione del massimo
 ```
 
-Una volta inizializzate le variabili `chiave` e `massimo` con i risultait ottenuti dal primo nodo disponibile, itera per tutti i nodi presenti nel grafo, aggiornando le variabili qualora un nodo ottenga un valore maggiore come risultato della funzione *threshold/[degree\*(degree+1)*. Una volta completato il ciclo, viene restituito il nodo che ha ottenuto il risultato maggiore. 
+Una volta inizializzate le variabili `chiave` e `massimo`, itera per tutti i nodi presenti nel grafo, aggiornando le variabili qualora un nodo ottenga un valore maggiore come risultato della funzione *threshold/[degree\*(degree+1)*. Una volta completato il ciclo, viene restituito il nodo che ha ottenuto il risultato maggiore. 
 
 Nel caso in cui utilizziamo il principio di decisione differita, è necessario fare le medie dei risultati ottenuti su 10 grafi diversi e poi scrivere i risultati su file.
-Senza principio di decisione differita, i risultati ottenuti ad ogni iterazioni vengono scritti sul file.
+Senza principio di decisione differita, i risultati ottenuti ad ogni singola iterazioni vengono scritti sul file.
 ___ 
 
 ## Risultati

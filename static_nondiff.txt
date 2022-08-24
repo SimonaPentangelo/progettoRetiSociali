@@ -1,0 +1,30 @@
+Soglia: 1
+Lunghezza di Tset: 3
+
+Soglia: 2
+Lunghezza di Tset: 87
+
+Soglia: 3
+Lunghezza di Tset: 206
+
+Soglia: 4
+Lunghezza di Tset: 320
+
+Soglia: 5
+Lunghezza di Tset: 426
+
+Soglia: 6
+Lunghezza di Tset: 540
+
+Soglia: 7
+Lunghezza di Tset: 665
+
+Soglia: 8
+Lunghezza di Tset: 764
+
+Soglia: 9
+Lunghezza di Tset: 873
+
+Soglia: 10
+Lunghezza di Tset: 967
+
