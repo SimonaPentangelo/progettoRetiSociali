@@ -3,6 +3,7 @@ import graphlib
 import random
 import time
 import snap
+import math
 from tqdm import tqdm
 
 soglia=5
@@ -10,7 +11,7 @@ random.seed(42)
 prob=0
 thold=[]
 media_risultati = 0 
-output_file_result = "magg_nondiff.txt"
+output_file_result = "Prop_diff.txt"
 
 def update_globvar(input1):
     global media_risultati    
@@ -32,10 +33,10 @@ def staticthreshold():
     return soglia
 
 def maggioranzathreshold(degree):
-    return round(degree * (1/2))
+    return math.ceil(degree * (1/2))
 
 def proportionalthreshold(degree):
-    return round(degree * (1/(2+staticthreshold())))
+    return math.ceil(degree * (1/(2+staticthreshold())))
 
 def randomthreshold():
     return random.randint(1,10)
@@ -120,27 +121,28 @@ def targetsetseldiff(G, k):
 
 def iniziathold(G):
     for nodo in G.Nodes():
-        thold.append(maggioranzathreshold(nodo.GetDeg()))
+        thold.append(proportionalthreshold(nodo.GetDeg()))
 
-''' TEST NON DIFFERITA'''
-#for j in range(0, 10):
-(G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-soglia = 1
-iniziathold(G)
-targetsetsel(G)
-thold = []
+''' TEST NON DIFFERITA
+for j in range(0, 10):
+    (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
+    soglia = j + 1
+    iniziathold(G)
+    targetsetsel(G)
+    thold = []
+'''
 
-''' TEST DIFFERITA
-for i in range(0, 10):
-        prob += 0.05
+''' TEST DIFFERITA'''
+for i in range(0, 5):
+        prob += 0.1
         prob = round(prob, 2)
         for j in range(0, 10):
             soglia = j + 1
             for k in range (0,10):
+                (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
                 differita(G)
                 iniziathold(G)
                 targetsetseldiff(G,k)
                 thold = []
-'''
     
 

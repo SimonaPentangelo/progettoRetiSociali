@@ -209,7 +209,7 @@ Le funzioni `tergetsetsel(G)` e `tergetsetseldiff(G, k)` implementano l'algoritm
                     f.write(str(prob))
                     f.write("\n")
                     f.write("Lunghezza di Tset (media): ")
-                    f.write(str(len(media_risultati))/10) #Calcolo della media
+                    f.write(str(media_risultati/10) #Calcolo della media
                     f.write("\n\n")
                     f.close
                 else: #Salvataggio per calcolare la media (non ho ancora finito le 10 iterazioni)
