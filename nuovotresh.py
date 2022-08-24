@@ -112,7 +112,7 @@ def targetsetseldiff(G, k):
         f.write(str(prob))
         f.write("\n")
         f.write("Lunghezza di Tset (media): ")
-        f.write(str(len(media_risultati))/10)
+        f.write(str(media_risultati/10))
         f.write("\n\n")
         f.close
     else: 
