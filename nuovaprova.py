@@ -3,9 +3,12 @@ import graphlib
 import random
 import time
 import snap
-from tqdm import tqdm
+
 thold = []
 soglia = 0
+
+def proportionalthreshold(degree):
+    return round(degree * (1/(2+staticthreshold())))
 
 def staticthreshold():
     return soglia
@@ -67,11 +70,11 @@ def targetsetsel(graph, node_threshold_mapping):
 def iniziathold(G):
     print(len(thold))
     for nodo in G.Nodes():
-        thold.append(staticthreshold())
+        thold.append(proportionalthreshold(nodo.GetDeg()))
 
 #for j in range(0, 10):
 (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-soglia = 9
+soglia = 6
 iniziathold(G)
 S = targetsetsel(G, thold)
 print(len(S))

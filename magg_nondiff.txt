@@ -1,0 +1,3 @@
+Soglia: 1 //Valore non utile
+Lunghezza di Tset: 594
+
