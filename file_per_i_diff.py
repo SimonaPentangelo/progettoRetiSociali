@@ -10,7 +10,7 @@ random.seed(42)
 prob=0
 thold=[]
 media_risultati = 0 
-output_file_result = "Static_Diff.txt"
+output_file_result = "Random_Thold.txt"
 
 def update_globvar(input1):
     global media_risultati    
@@ -126,10 +126,10 @@ def targetsetseldiff(G, k):
 def iniziathold(G):
     print(len(thold))
     for nodo in G.Nodes():
-        thold.append(staticthreshold()) #****
+        #thold.append(staticthreshold()) #****
         #thold.append(maggioranzathreshold(nodo.GetDeg()))
         #thold.append(proportionalthreshold(nodo.GetDeg()))
-        #thold.append(randomthreshold())
+        thold.append(randomthreshold())
 
 ''' TEST NON DIFFERITA
 for j in range(0, 10):
