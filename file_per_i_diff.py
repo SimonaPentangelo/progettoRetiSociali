@@ -10,7 +10,7 @@ random.seed(42)
 prob=0
 thold=[]
 media_risultati = 0 
-output_file_result = "static_nondiff.txt"
+output_file_result = "Static_Diff.txt"
 
 def update_globvar(input1):
     global media_risultati    
@@ -116,36 +116,39 @@ def targetsetseldiff(G, k):
         f.write(str(prob))
         f.write("\n")
         f.write("Lunghezza di Tset (media): ")
-        f.write(str(len(targetset))/10)
+        f.write(str(media_risultati/10))
         f.write("\n\n")
         f.close
+        reset_globvar()
     else: 
         update_globvar(len(targetset))
 
 def iniziathold(G):
     print(len(thold))
     for nodo in G.Nodes():
-        thold.append(staticthreshold())
+        thold.append(staticthreshold()) #****
+        #thold.append(maggioranzathreshold(nodo.GetDeg()))
+        #thold.append(proportionalthreshold(nodo.GetDeg()))
+        #thold.append(randomthreshold())
 
-''' TEST NON DIFFERITA'''
+''' TEST NON DIFFERITA
 for j in range(0, 10):
     (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
     soglia = j + 1
     iniziathold(G)
     targetsetsel(G)
-    thold = []
+    thold = []'''
 
-''' TEST DIFFERITA
-for i in range(0, 10):
-        prob += 0.05
+for i in range(0, 5):
+        prob += 0.1
         prob = round(prob, 2)
         for j in range(0, 10):
             soglia = j + 1
             for k in range (0,10):
+                (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
                 differita(G)
                 iniziathold(G)
                 targetsetseldiff(G,k)
                 thold = []
-'''
-    
+
 

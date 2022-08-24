@@ -1,0 +1,40 @@
+Soglia: 1
+Prob: 0.1
+Lunghezza di Tset (media): 11.0
+
+Soglia: 2
+Prob: 0.1
+Lunghezza di Tset (media): 95.2
+
+Soglia: 3
+Prob: 0.1
+Lunghezza di Tset (media): 210.3
+
+Soglia: 4
+Prob: 0.1
+Lunghezza di Tset (media): 320.0
+
+Soglia: 5
+Prob: 0.1
+Lunghezza di Tset (media): 426.8
+
+Soglia: 6
+Prob: 0.1
+Lunghezza di Tset (media): 541.6
+
+Soglia: 7
+Prob: 0.1
+Lunghezza di Tset (media): 652.5
+
+Soglia: 8
+Prob: 0.1
+Lunghezza di Tset (media): 761.6
+
+Soglia: 9
+Prob: 0.1
+Lunghezza di Tset (media): 860.6
+
+Soglia: 10
+Prob: 0.1
+Lunghezza di Tset (media): 956.5
+
