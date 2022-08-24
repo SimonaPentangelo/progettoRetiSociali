@@ -8,33 +8,33 @@ from matplotlib import pylab
 
 figure(figsize=(10, 20), dpi=80)
 
-#valore=[6.6,99.4,222.6,356.9,501.2,652.1,809.5,968.6,1132.2,1293.6]
-valore=[221.6,54.6,3.8,0.0]
+#nondiffstatic valore=[3,87,206,320,426,540,665,764,873,967]
+#nondiff etero valore= [443,432,423,434,442,428,430,402,449,432]
+#nondiff prop
+#diff prop 
+#diffstatic valore1=[11.0, 95.2, 210.3, 320.0, 426.8, 541.6, 652.5, 761.6, 860.6, 956.5] valore2=[18.5, 115.9, 239.1, 358.1, 476.5, 597.3, 718.5, 827.4, 940.1, 1044.2] valore3=[27.2, 134.9, 268.1, 396.1, 520.7, 654.4, 783.7, 896.8, 1023.3, 1135.5] valore4=[36.1, 164.0, 297.3, 435.9, 574.2, 704.8, 844.7, 971.8, 1090.1, 1207.6] valore5=[44.3, 182.2, 322.2, 479.3, 622.2, 769.6, 905.0, 1044.5, 1167.2, 1294.6]
+#diffetero valore1=[439.2,433.0,441.3,438.8,434.1,431.3,428.4,434.2,436.1,438.2] valore2=[480.9,489.6,483.2,485.5,486.2,498.1,487.6,480.4,485.3,478.0]valore3=[535.5,534.2,535.1,539.1,534.4,539.8,530.9,530.6,531.9,539.9]valore4=[582.3,593.5,593.0,582.0,584.3,587.6,588.2,581.7,582.2,576.4]valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
+assex= range(1,11)
 
-#assex=np.array(range(1,11))
-assex=[1/3,1/4,1/5,1/6]
 
 
+plt.plot(assex,valore1, '--bo', label='Probabilità a 0.1')
+plt.plot(assex,valore2, '--ro', label='Probabilità a 0.2')
+plt.plot(assex,valore3, '--go', label='Probabilità a 0.3')
+plt.plot(assex,valore4, '--o',color="orange", label='Probabilità a 0.4')
+plt.plot(assex,valore5, '--o',color="purple", label='Probabilità a 0.5')
+#plt.legend(bbox_to_anchor=(0.65, 0.80))
 
-#[520.4,514.3,503.9,496.1,488.3,485.9,477.1,470.1,464.5,459.5] differita maggioranza
-#[90.1,68.7,64.4,39.7,35.8,32.5,29.3,26.2,20.1,24.1] proprozionale diff
-#[407.0,436.3,464.9,479.0,505.2,536.3,559.4,582.5,605.1,647.1] random diff
-#[6.6,99.4,222.6,356.9,501.2,652.1,809.5,968.6,1132.2,1293.6]static diff
 
-#[3, 87, 206, 320, 426, 540, 665, 764, 873, 967] statico non diff
-
-#[0.05,0.1,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50] prob
-#[385.9, 388.0, 387.6, 387.5, 383.4, 386.1, 388.8, 383.3, 388.3, 387.6]etero non diff
-#[404.3,431.8,454.1,489.4,507.8, 529.1, 563.8, 591.5, 609.3, 644.0]etero diff
-
-"""plt.plot(assex,valore, '--bo', label='Differita Statica')
 #plt.xticks([0.05,0.1,0.15,0.20,0.25,0.30,0.35,0.40,0.45,0.50])
 plt.xticks(assex)
-plt.yticks(valore)
+#plt.yticks(valore)
+plt.yticks([400,425,450,475,500,525,550,575,600,625,650,675,700])
 #plt.tick_params(axis='y', direction='out',labelsize=8)
 #plt.yticks(rotation=45)
 #ax = plt.gca()
 #ax.set_ylim([11.0, 97.0])
-"""
+
 plt.legend()
+plt.savefig("diffrandom.png")
 plt.show()
