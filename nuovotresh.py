@@ -6,12 +6,12 @@ import snap
 import math
 from tqdm import tqdm
 
-soglia=5
+soglia=0
 random.seed(42)
 prob=0
 thold=[]
 media_risultati = 0 
-output_file_result = "Prop_diff.txt"
+output_file_result = "magg_diff.txt"
 
 def update_globvar(input1):
     global media_risultati    
@@ -58,9 +58,7 @@ def targetsetsel(G):
         for nodo in tqdm(G.Nodes()):
             if thold[nodo.GetId()] == 0:
                 for vicino in nodo.GetOutEdges():
-                    #print("Caso 1, pre nodo: " + str(vicino) + " thold: " +  str(thold[vicino]))
                     thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
-                    #print("Caso 1, post nodo: " + str(vicino) + " thold: " +  str(thold[vicino]))
                 eliminato = nodo.GetId()
                 G.DelNode(eliminato)
             else:
@@ -68,9 +66,7 @@ def targetsetsel(G):
                     targetset.append(nodo.GetId())
                     eliminato = nodo.GetId()
                     for vicino in nodo.GetOutEdges():
-                        #print("Caso 2, pre nodo: " + str(vicino) + " thold: " + str(thold[vicino]))
                         thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
-                        #print("Caso 2, post nodo: " + str(vicino) + " thold: " +  str(thold[vicino])
                     G.DelNode(eliminato)
         if eliminato == None:
             eliminato = caso3(G)
@@ -88,7 +84,7 @@ def targetsetseldiff(G, k):
     targetset=[]
     while G.GetNodes() != 0:
         eliminato = None
-        for nodo in tqdm(G.Nodes()):
+        for nodo in G.Nodes():
             if thold[nodo.GetId()] == 0:
                 for vicino in nodo.GetOutEdges():
                     thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
@@ -116,12 +112,13 @@ def targetsetseldiff(G, k):
         f.write(str(media_risultati/10))
         f.write("\n\n")
         f.close
+        reset_globvar()
     else: 
         update_globvar(len(targetset))
 
 def iniziathold(G):
     for nodo in G.Nodes():
-        thold.append(proportionalthreshold(nodo.GetDeg()))
+        thold.append(maggioranzathreshold(nodo.GetDeg()))
 
 ''' TEST NON DIFFERITA
 for j in range(0, 10):
@@ -136,13 +133,13 @@ for j in range(0, 10):
 for i in range(0, 5):
         prob += 0.1
         prob = round(prob, 2)
-        for j in range(0, 10):
-            soglia = j + 1
-            for k in range (0,10):
-                (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
-                differita(G)
-                iniziathold(G)
-                targetsetseldiff(G,k)
-                thold = []
+        #for j in tqdm(range(0, 10)):
+        #    soglia = j + 1
+        for k in tqdm(range (0,10)):
+            (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
+            differita(G)
+            iniziathold(G)
+            targetsetseldiff(G,k)
+            thold = []
     
 
