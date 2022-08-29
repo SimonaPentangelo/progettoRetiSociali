@@ -30,8 +30,13 @@ Il lavoro da noi svolto ha l'obiettivo di confrontare le dimensioni dei target s
 Questo dataset consiste nelle "cerchie" (o friend-lists) di Facebook. I dati sono stati raccolti tramite i partecipanti ad un sondaggio, utilizzando l'app di Facebook. Il dataset include le caratteristiche dei nodi (profili), le cerchie e gli *ego networks*, ovvero reti costituite di un nodo focale ("ego"), dei nodi ai quali l'ego è direttamente connesso (detti "alters") e dei collegamenti, se presenti, tra gli alters.
 
 I dati sono stati anonimizzati rimpiazzando gli id interni di Facebook con un nuovo valore. Inoltre, dal momento che sono stati forniti i vettori contenenti le varie features di questo dataset, l'interpretazione di queste caratteristiche è stata anonimizzata. Per esempio, se nel dataset originale la caratteristica *political=Democratic Party"*, il nuovo valore per questa feature conterrebbe semplicemente *political=anonymized feature 1*. Con i dati anonimizzati, è possibile determinare se due utenti hanno le stesse affiliazioni politiche, ma non è possibile sapere le effettive affiliazioni dei singoli indvidui.
+
+| Caratteristiche | Nodi | Archi | Coefficente medio di clustering | 
+| ---- | ---- | ---- | ---- | 
+| Valori | 4039 | 88234 | 0.6055 |
 ___
 ## Studio effettuato
+
 Abbiamo deciso di confrontare i target set ottenuti con diverse modalità di inizializzazione dei threshold:
 
  - *Costante (omogeneo)*
@@ -282,7 +287,7 @@ ___
 
 | Seed | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| Grafo non differito | 443 | 432 | 423 |434 | 442 | 428 | 430 | 402 | 449| 432 | 
+| Grafo non differito | 443 | 432 | 423 |434 | 442 | 428 | 430 | 402 | 449 | 432 | 
 
 valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
 
@@ -303,26 +308,26 @@ valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
 
 *Senza principio di decisione differita*             |  *Con principio di decisione differita*
 :-------------------------:|:-------------------------:
-![nonDifferito](risultati/.png)  |  ![differito](risultati/.png)
+![nonDifferito](risultati/nondiffprop.png)  |  ![differito](risultati/propdiff.png)
 
-| Seed | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 |
-| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| Grafo non differito | 443 | 432 | 423 |434 | 442 | 428 | 430 | 402 | 449| 432 | 
+| Frazione | 1/2 | 1/3 | 1/4 | 1/5 | 1/6 | 1/7 | 1/8 | 1/9 | 1/10 | 1/11 | 1/12 |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Grafo non differito | 619 | 291 | 183 | 134 | 100 | 80 | 66 | 56 | 50 | 46 | 37 | 
 
-valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
 
 | Probabilità | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
 | ---- | ---- | ---- | ---- | ---- | ---- |
-| Seed = 42 | 439.2 | 480.9 | 535.5 | 582.3 | 643.2 |
-| - | 433.0 | 489.6 | 534.2 | 593.5 | 638.8 |
-| - | 441.3 | 483.2 | 535.1 | 593.0 | 631.5 |
-| - | 438.8 | 485.5 | 539.1 | 582.0 | 641.0 |
-| - | 434.1 | 486.2 | 534.4 | 584.3 | 639.6 |
-| - | 431.3 | 498.1 | 539.8 | 587.6 | 633.6 |
-| - | 428.4 | 487.6 | 530.9 | 588.2 | 638.5 |
-| - | 434.2 | 480.4 | 530.6 | 581.7 | 640.0 |
-| - | 436.1 | 485.3 | 531.9 | 582.2 | 633.2 |
-| - | 438.2 | 478.0 | 539.9 | 576.4 | 642.5 |
+| Frazione = 1/2 | 536.1 | 522.9 | 509.9 | 497.0 | 493.5 |
+| Frazione = 1/3 | 250.2 | 240.1 | 233.0 | 233.4 | 215.6 |
+| Frazione = 1/4 | 157.3 | 151.4 | 142.3 | 139.2 | 136.8 |
+| Frazione = 1/5 | 113.5 | 105.4 | 100.5 | 94.3 | 94.8 |
+| Frazione = 1/6 | 84.0 | 79.2 | 75.9 | 71.2 | 68.8 |
+| Frazione = 1/7 | 67.8 | 62.8 | 59.7 | 57.2 | 54.0 |
+| Frazione = 1/8 | 56.6 | 51.7 | 49.0 | 47.1 | 43.8 |
+| Frazione = 1/9 | 48.0 | 43.9 | 40.9 | 39.6 | 37.6 |
+| Frazione = 1/10 | 41.3 | 38.4 | 35.6 | 34.3 | 34.0 |
+| Frazione = 1/11 | 35.9 | 33.3 | 32.0 | 29.9 | 30.1 |
+| Frazione = 1/12 | 32.3 | 31.8 | 30.1 | 26.5 | 25.9 |
 ___  
 
 ## Conclusioni  
