@@ -11,7 +11,7 @@ random.seed(42)
 prob=0
 thold=[]
 media_risultati = 0 
-output_file_result = "magg_diff.txt"
+output_file_result = "" #inserire nome file di output
 
 def update_globvar(input1):
     global media_risultati    
@@ -118,18 +118,20 @@ def targetsetseldiff(G, k):
 
 def iniziathold(G):
     for nodo in G.Nodes():
-        thold.append(maggioranzathreshold(nodo.GetDeg()))
+        #thold.append(staticthreshold()) #****
+        #thold.append(maggioranzathreshold(nodo.GetDeg()))
+        #thold.append(proportionalthreshold(nodo.GetDeg()))
+        thold.append(randomthreshold())
 
-''' TEST NON DIFFERITA
+''' TEST NON DIFFERITA '''
 for j in range(0, 10):
     (G, Map)= snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
     soglia = j + 1
     iniziathold(G)
     targetsetsel(G)
     thold = []
-'''
 
-''' TEST DIFFERITA'''
+''' TEST DIFFERITA
 for i in range(0, 5):
         prob += 0.1
         prob = round(prob, 2)
@@ -141,5 +143,5 @@ for i in range(0, 5):
             iniziathold(G)
             targetsetseldiff(G,k)
             thold = []
-    
+'''   
 

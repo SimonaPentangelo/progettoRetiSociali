@@ -10,7 +10,7 @@ random.seed(42)
 prob=0
 thold=[]
 media_risultati = 0 
-output_file_result = "Random_Thold.txt"
+output_file_result = "" #inserire nome file di output
 
 def update_globvar(input1):
     global media_risultati    
@@ -57,9 +57,7 @@ def targetsetsel(G):
         for nodo in tqdm(G.Nodes()):
             if thold[nodo.GetId()] == 0:
                 for vicino in nodo.GetOutEdges():
-                    #print("Caso 1, pre nodo: " + str(vicino) + " thold: " +  str(thold[vicino]))
                     thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
-                    #print("Caso 1, post nodo: " + str(vicino) + " thold: " +  str(thold[vicino]))
                 eliminato = nodo.GetId()
                 G.DelNode(eliminato)
             else:
@@ -67,9 +65,7 @@ def targetsetsel(G):
                     targetset.append(nodo.GetId())
                     eliminato = nodo.GetId()
                     for vicino in nodo.GetOutEdges():
-                        #print("Caso 2, pre nodo: " + str(vicino) + " thold: " + str(thold[vicino]))
                         thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
-                        #print("Caso 2, post nodo: " + str(vicino) + " thold: " +  str(thold[vicino])
                     G.DelNode(eliminato)
         if eliminato == None:
             eliminato = caso3(G)
@@ -90,19 +86,14 @@ def targetsetseldiff(G, k):
         for nodo in tqdm(G.Nodes()):
             if thold[nodo.GetId()] == 0:
                 for vicino in nodo.GetOutEdges():
-                    #print("Caso 1, pre nodo: " + str(vicino) + " thold: " +  str(thold[vicino]))
                     thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
-                    #print("Caso 1, post nodo: " + str(vicino) + " thold: " +  str(thold[vicino]))
-                eliminato = nodo.GetId()
                 G.DelNode(eliminato)
             else:
                 if thold[nodo.GetId()] > nodo.GetOutDeg():
                     targetset.append(nodo.GetId())
                     eliminato = nodo.GetId()
                     for vicino in nodo.GetOutEdges():
-                        #print("Caso 2, pre nodo: " + str(vicino) + " thold: " + str(thold[vicino]))
                         thold[vicino] = thold[vicino] - 1 if thold[vicino] - 1 > 0 else 0
-                        #print("Caso 2, post nodo: " + str(vicino) + " thold: " +  str(thold[vicino])
                     G.DelNode(eliminato)
         if eliminato == None:
             eliminato = caso3(G)

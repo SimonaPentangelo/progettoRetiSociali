@@ -2,8 +2,8 @@
 Progetto di corso per l'esame di **Reti sociali 2021/22**.
 
 - Studenti: **Gaetano Casillo**, **Simona Pentangelo**, **Gabriele Pisapia**
-- Data di consegna: **-**  
 ___
+
 ## Sommario
 - [**Target Set Seceltion**](#target-set-selection)
   - [Sommario](#sommario)
@@ -11,6 +11,7 @@ ___
     - [Dataset](#dataset)
   - [Studio effettuato](#studio-effettuato)
   - [Dettagli implementativi](#dettagli-implementativi)
+    - [Cos'è presente in questa repository](#cos-è-presente-in-questa-repository)
     - [Inizializzazione dei threshold](#inizializzazione-dei-threshdold)
     - [Principio di decisione differita](#principio-di-decisione-differita)
     - [Algoritmo di Target Set Selection](#algoritmo-di-target-set-selection)
@@ -20,6 +21,7 @@ ___
     - [Threshold a maggioranza e proporzionale al grado](#threshold-a-maggioranza-e-proporzionale-al-grado)
   - [Conclusioni](#conclusioni)
 ___
+
 ## Introduzione
 Il problema del **Target Set Selection (TSS)** consiste nel trovare, all'interno dei nodi di una rete, il più piccolo insieme di nodi i quali permettano di condizionare l'intera rete. Formalmente, dato un grafo G=(V, E), in cui per ogni vertice v, *d(v)* indica il grado del vertice e *t(v)* indica il threshold associato al vertice (ovvero, il numero minimo di adiacenti attivi di v necessari per influenzare v), il suo target set S è un insieme di nodi tali che attiveranno l'intera rete, ovvero, per il quale si verifica Influenced[S, ℓ]=V, per qualche ℓ ≥ 0.
 
@@ -35,6 +37,7 @@ I dati sono stati anonimizzati rimpiazzando gli id interni di Facebook con un nu
 | ---- | ---- | ---- | ---- | 
 | Valori | 4039 | 88234 | 0.6055 |
 ___
+
 ## Studio effettuato
 
 Abbiamo deciso di confrontare i target set ottenuti con diverse modalità di inizializzazione dei threshold:
@@ -49,13 +52,23 @@ Se il numero generato è minore della probabilità presente sull'arco (cioè il 
 Il grafo così ottenuto viene dato in input all'algoritmo scelto, che calcola
 l’insieme soluzione e lo restituisce in output.
 ___
+
 ## Dettagli implementativi 
 
+### Cos'è presente in questa repository
+
+I file contenenti l'algoritmo TSS sono rispettivamente **tss_final_vers.py**, che abbiamo utilizzato per generare i risultati senza principio di decisione differita, e **tss_final_diff.py**, che abbiamo utilizzato per generare i risultati con principio di decisione differita.
+
 Per lavorare con il dataset disponibile su [SNAP](http://snap.stanford.edu/index.html), abbiamo utilizzato il linguaggio **Python** e il modulo [Snap.py](https://snap.stanford.edu/snappy/doc/reference/index-ref.html), il quale ci ha permesso non solo di caricare il grafo, ma anche di accedere alle varie informazioni utili ai fini dell'algoritmo, come il degree dei nodi ed il neighborhood di un nodo.
+
+Abbiamo utilizzato il file *facebook_combined.txt* per caricare il grafo.
 
 ```python
 (G, Map) = snap.LoadEdgeListStr(snap.TUNGraph, "facebook_combined.txt", 0, 1, True)
 ```
+I file di output generati dai nostri script sono situati nella cartella *file_output*, i valori presenti su questi file di testo, sono stati utilizzati come input dello script **grafici.py** per generare i grafici relativi ai target set trovati e sono situati nella cartella *risultati*.
+
+La cartella *python_test* contiene vari file e script che ci sono stati utili in fase di testing.
 
 ### Inizializzazione dei threshold
 
@@ -257,6 +270,8 @@ ___
 
 ### Threshold costante
 
+Osservando i grafici generati, i risultati ottenuti con e senza decisione differita hanno andamento simile: con principio di decisione differita, i target set trovati per ogni soglia sono tendenzialmente più grandi e crescono di dimensione al crescere della probabilità.
+
 *Senza principio di decisione differita*             |  *Con principio di decisione differita*
 :-------------------------:|:-------------------------:
 ![nonDifferito](risultati/nondiffstatica.png)  |  ![differito](risultati/diffstatic.png)
@@ -281,15 +296,15 @@ ___
 
 ### Threshold eterogeneo
 
+Osservando i grafici generati, senza e con principio di decisione differita, le taglie dei target set trovati non si discostano molto le une dalle altre, inoltre, all'aumentare della probailità, crescono anche le taglie degli insiemi risultanti.
+
 *Senza principio di decisione differita*             |  *Con principio di decisione differita*
 :-------------------------:|:-------------------------:
 ![nonDifferito](risultati/nondiffetero.png)  |  ![differito](risultati/diffrandom.png)
 
 | Seed | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 | 42 |
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| Grafo non differito | 443 | 432 | 423 |434 | 442 | 428 | 430 | 402 | 449 | 432 | 
-
-valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
+| Grafo non differito | 443 | 432 | 423 | 434 | 442 | 428 | 430 | 402 | 449 | 432 | 
 
 | Probabilità | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
 | ---- | ---- | ---- | ---- | ---- | ---- |
@@ -305,6 +320,8 @@ valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
 | - | 438.2 | 478.0 | 539.9 | 576.4 | 642.5 |
 
 ### Threshold a maggioranza e proporzionale al grafo
+
+Osservando i grafici generati, le taglie dei target set diventano sempre più piccole con il diminuire delle frazioni, inoltre, utilizzando il principio di decisione dfferita, i risultati sono migliori rispetto a quelli ottenuti senza decisione differita e migliorano sempre di più al crescere della probabilità. 
 
 *Senza principio di decisione differita*             |  *Con principio di decisione differita*
 :-------------------------:|:-------------------------:
@@ -328,9 +345,10 @@ valore5=[643.2,638.8,631.5,641.0,639.6,633.6,638.5,640.0,633.2,642.5]
 | Frazione = 1/10 | 41.3 | 38.4 | 35.6 | 34.3 | 34.0 |
 | Frazione = 1/11 | 35.9 | 33.3 | 32.0 | 29.9 | 30.1 |
 | Frazione = 1/12 | 32.3 | 31.8 | 30.1 | 26.5 | 25.9 |
+
 ___  
 
 ## Conclusioni  
 
-
+In conclusione, con threshold costanti ed eterogeneo, le taglie degli insiemi trovati sono risultate più grandi con l'utilizzo del principio di decisione differita rispetto a quelle ottenute senza, inoltre i risultati sono aumentati al crescere della probabilità. Al contrario con threshold a magioranza e proporzionale al grado, i target set sono diventati più piccoli con l'utilizzo del principio di decisione differita e sempre più piccoli all'aumentare della probabilità.
 ___
