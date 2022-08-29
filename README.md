@@ -331,7 +331,6 @@ Osservando i grafici generati, le taglie dei target set diventano sempre più pi
 | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | Grafo non differito | 619 | 291 | 183 | 134 | 100 | 80 | 66 | 56 | 50 | 46 | 37 | 
 
-
 | Probabilità | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 |
 | ---- | ---- | ---- | ---- | ---- | ---- |
 | Frazione = 1/2 | 536.1 | 522.9 | 509.9 | 497.0 | 493.5 |
