@@ -82,7 +82,7 @@ Abbiamo deciso di eseguire l'algoritmo utilizzando diverse configurazioni per i 
     - Threshold deterministico: soglie da 1 a 10
     - Threshold eterogeneo: seed = 42
     - Threshold a maggioranza: gradi del nuovo grafo
-    - Threshold proporzionale al grado: gradi del nuovo grafo e con frazioni da 1/3 ad 1/12
+    - Threshold proporzionale al grado: gradi del nuovo grafo e con frazioni da 1/3 ad 1/13
 
 Per quelli con principio di decisione differita, abbiamo eseguito 10 volte l'update del grafo e l'esecuzione dell'algoritmo. Una volta completate le 10 esecuzioni, è stata calcolata la relativa alla taglia del target set. Qui abbiamo riportato il codice utilizzato per invocare le funzioni per il TSS.
 
@@ -349,5 +349,5 @@ ___
 
 ## Conclusioni  
 
-In conclusione, con threshold costanti ed eterogeneo, le taglie degli insiemi trovati sono risultate più grandi con l'utilizzo del principio di decisione differita rispetto a quelle ottenute senza, inoltre i risultati sono aumentati al crescere della probabilità. Al contrario con threshold a magioranza e proporzionale al grado, i target set sono diventati più piccoli con l'utilizzo del principio di decisione differita e sempre più piccoli all'aumentare della probabilità.
+In conclusione, con threshold costanti ed eterogeneo, le taglie degli insiemi trovati sono risultate più grandi con l'utilizzo del principio di decisione differita rispetto a quelle ottenute senza, inoltre i risultati sono aumentati al crescere della probabilità. Al contrario con threshold a maggioranza e proporzionale al grado, i target set sono diventati più piccoli con l'utilizzo del principio di decisione differita e sempre più piccoli all'aumentare della probabilità.
 ___
